@@ -4,27 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RegExGenerator {
-    //private int maxLength;
+    private int maxLength;
 
-    public RegExGenerator(/*int maxLength*/) {
-        //this.maxLength = maxLength;
-        // Asumo siempre longitud minima por enunciado
+    public RegExGenerator(int maxLength) {
+        this.maxLength = maxLength;
     }
 
     public List<String> generate(String regEx, int numberOfResults) {
-        TokenGenerator tokenGenerator = new TokenGenerator(regEx);
-        ArrayList<Token> tokens = tokenGenerator.getTokens();
+        // Debug
         //System.out.println("" + regEx);
 
-        // Cuantificador dice cuantas veces tiene que generar el caracter
         ArrayList<String> resultado = new ArrayList<String>();
         int it2 = 0;
         while (it2 < numberOfResults) {
             it2 += 1;
+            TokenGenerator tokenGenerator = new TokenGenerator(regEx, maxLength);
+            ArrayList<Token> tokens = tokenGenerator.getTokens();
             resultado.add(evaluate(tokens));
         }
 
-        //final String res = resultado;
         return resultado;
     }
 
@@ -37,6 +35,7 @@ public class RegExGenerator {
         }
         String resultado = buf.toString();
 
+        // Debug
         //System.out.println("" + resultado);
 
         return resultado;

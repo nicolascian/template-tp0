@@ -1,19 +1,22 @@
 package ar.fiuba.tdd.template.tp0;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by nicolas on 20/03/16.
  */
 public class TokenGenerator {
     private String regEx;
+    private int max;
     private boolean escape = false;
     private Tokenizer tokenizer;
 
     private ArrayList<Token> tokens =  new ArrayList<Token>();
 
-    public TokenGenerator(String regular) {
+    public TokenGenerator(String regular, int maxLength) {
         regEx = regular;
+        max = maxLength;
 
         tokenizer = new Tokenizer();
         tokenizer.add("\\\\", 1); // Una escape
@@ -95,13 +98,13 @@ public class TokenGenerator {
         if (escape) {
             tokens.add(new Token("+"));
             escape = false;
-        // } else {
-            // Restriccion: generar longitud minima
-            // + -> Uno o Muchos -> minimo = 1
-            // como cantidad = 1;
-            // No removemos ni agregamos nada
-            // Si quisiera aumentar las repeticiones duplico el ultimo
-            // elemento de la lista las veces que sea necesario.
+        } else {
+            // Para aumentar segun el cuantificador duplico el ultimo
+            // Token de la lista las veces que sea necesario.
+            int cantidad = getUnoMuchos();
+            cuantificar(cantidad);
+            // Debug
+            //System.out.println("" + "+ cant: " + cantidad);
         }
     }
 
@@ -110,13 +113,12 @@ public class TokenGenerator {
             tokens.add(new Token("*"));
             escape = false;
         } else {
-            // Restriccion: generar longitud minima
-            // * -> Cero o Muchos -> minimo = 0
-            // como cantidad = 0;
-            // Removemos el ultimo token del array
-            tokens.remove(tokens.size() - 1);
-            // Si quisiera aumentar las repeticiones duplico el ultimo
-            // elemento de la lista las veces que sea necesario.
+            // Para aumentar segun el cuantificador duplico el ultimo
+            // Token de la lista las veces que sea necesario.
+            int cantidad = getCeroMuchos();
+            cuantificar(cantidad);
+            // Debug
+            //System.out.println("" + "* cant: " + cantidad);
         }
     }
 
@@ -125,17 +127,50 @@ public class TokenGenerator {
             tokens.add(new Token("?"));
             escape = false;
         } else {
-            // Restriccion: generar longitud minima
-            // como cantidad = 0;
-            // Removemos el ultimo token del array
-            tokens.remove(tokens.size() - 1);
-            // Si quisiera aumentar las repeticiones duplico el ultimo
-            // elemento de la lista las veces que sea necesario.
+            // Para aumentar segun el cuantificador duplico el ultimo
+            // Token de la lista las veces que sea necesario.
+            int cantidad = getCeroUno();
+            cuantificar(cantidad);
+            // Debug
+            //System.out.println("" + "? cant: " + cantidad);
         }
     }
 
     private void evaluateLiterales(String sequence) {
         tokens.add(new Token(sequence));
         escape = false;
+    }
+
+    private void cuantificar(int cantidad) {
+        if (cantidad == 0) {
+            // Removemos el ultimo token del array
+            tokens.remove(tokens.size() - 1);
+
+        } else {
+            // Para aumentar segun el cuantificador duplico el ultimo
+            // Token de la lista las veces que sea necesario.
+            int it3 = 0;
+            while (it3 < cantidad - 1) {
+                it3 += 1;
+                tokens.add(tokens.get(tokens.size() - 1));
+            }
+        }
+    }
+
+    private int getCeroUno() {
+        return getRandom(0, 1);
+    }
+
+    private int getCeroMuchos() {
+        return getRandom(0, max);
+    }
+
+    private int getUnoMuchos() {
+        return getRandom(1, max);
+    }
+
+
+    private int getRandom(int minimo, int maximo) {
+        return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
     }
 }

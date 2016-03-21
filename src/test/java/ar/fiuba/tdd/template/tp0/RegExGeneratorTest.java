@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 public class RegExGeneratorTest {
 
     private boolean validate(String regEx, int numberOfResults) {
-        RegExGenerator generator = new RegExGenerator();
+        RegExGenerator generator = new RegExGenerator(10);
 
         List<String> results = generator.generate(regEx, numberOfResults);
         // force matching the beginning and the end of the strings
@@ -74,6 +74,16 @@ public class RegExGeneratorTest {
     @Test
     public void testEscapedCuantifiers() {
         assertTrue(validate("\\?\\+\\*", 1));
+    }
+
+    @Test
+    public void testMultipleResults() {
+        assertTrue(validate(".", 5));
+    }
+
+    @Test
+    public void testMultipleQuantifiers() {
+        assertTrue(validate("a?\\.b+\\.c*\\.d?\\.e+\\.f*", 1));
     }
 
     @Test
