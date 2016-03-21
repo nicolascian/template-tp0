@@ -8,12 +8,13 @@ public class RegExGenerator {
 
     public RegExGenerator(/*int maxLength*/) {
         //this.maxLength = maxLength;
+        // Asumo siempre longitud minima por enunciado
     }
 
     public List<String> generate(String regEx, int numberOfResults) {
         TokenGenerator tokenGenerator = new TokenGenerator(regEx);
         ArrayList<Token> tokens = tokenGenerator.getTokens();
-        System.out.println("" + regEx);
+        //System.out.println("" + regEx);
 
         // Cuantificador dice cuantas veces tiene que generar el caracter
         ArrayList<String> resultado = new ArrayList<String>();
@@ -36,7 +37,7 @@ public class RegExGenerator {
         }
         String resultado = buf.toString();
 
-        System.out.println("" + resultado);
+        //System.out.println("" + resultado);
 
         return resultado;
     }

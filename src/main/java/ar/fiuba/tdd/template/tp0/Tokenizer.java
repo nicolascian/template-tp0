@@ -17,18 +17,6 @@ public class Tokenizer {
         }
     }
 
-    public static class Token {
-        public final int token;
-        public final String sequence;
-
-        public Token(int token, String sequence) {
-            super();
-            this.token = token;
-            this.sequence = sequence;
-        }
-
-    }
-
     private LinkedList<TokenInfo> tokenInfos;
     private LinkedList<Token> tokens;
 

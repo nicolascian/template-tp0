@@ -1,7 +1,6 @@
 package ar.fiuba.tdd.template.tp0;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created by nicolas on 20/03/16.
@@ -30,7 +29,7 @@ public class TokenGenerator {
 
     public ArrayList<Token> getTokens() {
         // Recorrer los tokens e ir creando instancias de Token
-        for (Tokenizer.Token tok : tokenizer.getTokens()) {
+        for (Token tok : tokenizer.getTokens()) {
             //System.out.println("" + tok.token + " " + tok.sequence);
             selectCase(tok.token, tok.sequence);
         }
